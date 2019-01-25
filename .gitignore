@@ -1,1 +1,7 @@
 server/node_modules
+Cartfile.resolved
+iOSSdk/build
+iOSSdk/Carthage
+iOSSdk/LogsiOS.framework
+iOSSdk/SocketIO.framework
+iOSSdk/Starscream.framework
