@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <title>LogsViewer</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 30px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      #messages { margin-bottom: 10px }
+      #messages { margin-top: 10px }
+
+      #header h1 { padding: 5px 10px; }
+      #header h3 { padding: 10px 10px; }
+      #header h3 { margin-top: 0px; }
+      #header { margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+
+    <div id="header"></div>
+    <ul id="messages"></ul>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var url = window.location.href;
+      var captured = /deviceId=([^&]+)/.exec(url)[1];
+      var host = window.location.host;
+      var deviceId = captured ? captured : 'myDefaultValue';
+
+      document.title = "Logs for: " + deviceId;
+
+      $('#header').append($('<h1>').text("Logs for: " + deviceId));
+      $('#header').append($('<h3>').text("Running..."));
+
+      var socket = io.connect(host, {transports: ['websocket']});
+      socket.on(deviceId, function(msg){
+        $('#messages').append($('<li>').text(msg));
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+    </script>
+  </body>
+</html>
