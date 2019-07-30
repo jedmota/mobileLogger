@@ -10,19 +10,18 @@ import Foundation
 
 public class LogsWrapper: NSObject {
     
-    public static var sharedInstance: LogsWrapper = LogsWrapper()
+    private static var sharedInstance: LogsWrapper = LogsWrapper()
     
-    let bonjourClient = Bonjour()
-    var socketClientWrappers: [SocketIOClientWrapper] = []
-    public var debug = false
+    private let bonjourClient = Bonjour()
+    private var socketClientWrappers: [SocketIOClientWrapper] = []
+    public static var debug = false
     
-    public func start() {
+    public static func start() {
 
-        bonjourClient.findService(Bonjour.Services.SocketIO, domain: Bonjour.LocalDomain) { [weak self] service in
+        sharedInstance.bonjourClient.findService(Bonjour.Services.SocketIO, domain: Bonjour.LocalDomain) { service in
             
             if let hostname = service?.hostName, let port = service?.port {
-                
-                self?.initSocket(hostname: hostname, port: port)
+                sharedInstance.initSocket(hostname: hostname, port: port)
             }
         }
     }
@@ -30,14 +29,14 @@ public class LogsWrapper: NSObject {
     
     private func initSocket(hostname: String, port: Int) {
         let socketWrapper = SocketIOClientWrapper.init(hostname: hostname, port: port)
-        socketWrapper.debug = debug
+        socketWrapper.debug = LogsWrapper.debug
         socketClientWrappers.append(socketWrapper)
         socketWrapper.start()
     }
     
-    public func sendLog(_ message: String) {
+    public static func sendLog(_ message: String) {
         
-        socketClientWrappers.forEach {
+        sharedInstance.socketClientWrappers.forEach {
             $0.sendLog(message: message)
         }
     }
