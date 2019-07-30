@@ -18,7 +18,7 @@ class SocketIOClientWrapper: NSObject {
     private var manager: SocketManager?
     private var socket: SocketIOClient?
     
-    private let deviceId = UIDevice.current.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "´", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "’", with: "")
+    private let deviceId = UIDevice.current.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "´", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "’", with: "").replacingOccurrences(of: "ʀ", with: "R")
     
     init(hostname: String, port: Int) {
         self.hostname = hostname
